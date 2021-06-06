@@ -1,13 +1,6 @@
-function reducer(state = { gistList: {} }, action) {
-  switch (action.type) {
-    case "FETCH_USER_GISTS":
-      return {
-        ...state,
-        gistList: action.data
-      };
-    default:
-      return state;
-  }
-}
+import { combineReducers } from 'redux';
+import searchReducer from '../../Search/SearchReducer';
 
-export default reducer;
+export default combineReducers({
+  searchReducer,
+});
