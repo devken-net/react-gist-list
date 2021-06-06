@@ -1,8 +1,16 @@
-import { Input, Row, Col, Card } from 'antd';
+import { Input, Row, Col } from 'antd';
+import { useDispatch } from "react-redux";
+import { getAllUserGists } from './SearchAction';
+
+// deconstruct Search component
 const { Search } = Input;
 
-function SearchContainer() {
-  const onSearch = (username) => { console.log(username) }
+function SearchComponent() {
+  const dispatch = useDispatch();
+  const onSearch = (username) => { 
+    // invoke action
+    dispatch(getAllUserGists(username.trim()));
+   }
 
   return <header className="App-header">
     <h1 className="text-center">GithubGist</h1>
@@ -25,4 +33,4 @@ function SearchContainer() {
   </header>
 }
 
-export default SearchContainer;
+export default SearchComponent;
