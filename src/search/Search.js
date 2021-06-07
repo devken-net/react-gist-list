@@ -14,7 +14,7 @@ function SearchComponent() {
 
   return <header className="App-header">
     <h1 className="text-center pt-8">
-      <GithubOutlined className="px-4"/>
+      <GithubOutlined className="pr-4"/>
       <b>Github</b>Gists
     </h1>
     <div className="Search pa-4">
