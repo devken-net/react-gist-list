@@ -11,29 +11,34 @@ function GistListComponent() {
 
   const dispatch = useDispatch();
   const onCollapsed = (key) => {
+    if (!gistList[key]) return;
     const { id, forks_url } = gistList[key];
     dispatch(getAllGistForks(id, forks_url));
   }
 
   const ForkedBy = ({ forks, html_url }) => {
-    if (!forks) return;
+    if (!forks || forks.length < 1) return <Avatar style={{ color: '#3c9ae8', backgroundColor: '#111d2c' }}>0</Avatar>;
     const lastThreeForks = forks.slice(-3, forks.length);
+    const otherForksCount = forks.length > 3 ? forks.length-3 : 0
 
     return <>
       {
         lastThreeForks.map(fork => 
-          <Tooltip title={fork?.owner?.login} placement="top">
+          <Tooltip key={ fork?.id } title={fork?.owner?.login} placement="top">
             <Button type="link" href={fork?.html_url} target="_blank" className="mx-1 pa-0">
               <Avatar src={ fork?.owner?.avatar_url } />
             </Button>
           </Tooltip>
         )
       }
-      <Tooltip title="View All" placement="top">
-        <Button type="link" href={`${html_url}/forks`} target="_blank" className="mx-1 pa-0">
-          <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>+{ (forks.length-3) }</Avatar>
-        </Button>
-      </Tooltip>
+      {
+        !!otherForksCount &&
+        <Tooltip title="View All" placement="top">
+          <Button type="link" href={`${html_url}/forks`} target="_blank" className="mx-1 pa-0">
+            <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>+{ otherForksCount }</Avatar>
+          </Button>
+        </Tooltip>
+      }
     </>
   }
 
@@ -59,7 +64,7 @@ function GistListComponent() {
                 <Col flex="200px" className="pr-4"> Forked By: </Col>
                 <Col flex="auto">
                   {
-                     ForkedBy(gist)
+                    ForkedBy(gist)
                   }
                 </Col>
               </Row>
