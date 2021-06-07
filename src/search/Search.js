@@ -13,7 +13,7 @@ function SearchComponent() {
    }
 
   return <header className="App-header">
-    <h1 className="text-center">GithubGist</h1>
+    <h1 className="text-center pt-8"><b>Github</b>Gist</h1>
     <div className="Search pa-4">
       <Row align="middle" justify="center">
         <Col flex="none" className="pr-4">
@@ -25,6 +25,7 @@ function SearchComponent() {
             allowClear
             enterButton="Search"
             size="large"
+            value="jmk2142"
             onSearch={onSearch}
           />
         </Col>
