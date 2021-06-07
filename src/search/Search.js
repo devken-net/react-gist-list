@@ -2,13 +2,12 @@ import { Input, Row, Col } from 'antd';
 import { useDispatch } from "react-redux";
 import { getAllUserGists } from './SearchAction';
 
-// deconstruct Search component
 const { Search } = Input;
 
 function SearchComponent() {
   const dispatch = useDispatch();
   const onSearch = (username) => { 
-    // invoke action
+    // invoke action on search submit
     dispatch(getAllUserGists(username.trim()));
    }
 

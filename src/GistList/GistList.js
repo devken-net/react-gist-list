@@ -1,7 +1,7 @@
 import { Button, Col, Collapse, List, Row, Spin, Tag, Typography } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { getAllGistForks } from './GistListAction';
-import ForksAvatar from '../ForksAvatar/ForksAvatar';
+import ForksAvatar from '../ForksAvatar';
 import './GistList.scoped.css';
 
 const { Panel } = Collapse;
@@ -13,8 +13,11 @@ function GistListComponent() {
 
   const dispatch = useDispatch();
   const onCollapsed = (key) => {
-    if (!gistList[key]) return;
+    // return null if gist is `undefined` or `null` or if `forks` is already fetched
+    if (!gistList[key] || gistList[key]?.forks) return;
+
     const { id, forks_url } = gistList[key];
+    // fetch gist forks on Panel is open
     dispatch(getAllGistForks(id, forks_url));
   }
 
@@ -47,20 +50,18 @@ function GistListComponent() {
               <Row align="top" justify="start" gutter="12" className="my-4">
                 <Col flex="100px" className="pr-4"> Files: </Col>
                 <Col flex="auto" className="pr-4">
-                  {
-                    <List
-                      bordered
-                      dataSource={ gist?.files && Object.values(gist.files) }
-                      renderItem={item => (
-                        <List.Item>
-                          <Button type="link" href={`${ gist?.html_url }#file-${ item?.filename }`} target="_blank" className="mx-2 pa-0">
-                            { item?.filename }
-                          </Button>
-                           <Tag color="blue">{ item?.language }</Tag>
-                        </List.Item>
-                      )}
-                    />
-                  }
+                  <List
+                    bordered
+                    dataSource={ gist?.files && Object.values(gist.files) }
+                    renderItem={item => (
+                      <List.Item>
+                        <Button type="link" href={`${ gist?.html_url }#file-${ item?.filename }`} target="_blank" className="mx-2 pa-0">
+                          { item?.filename }
+                        </Button>
+                          <Tag color="blue">{ item?.language }</Tag>
+                      </List.Item>
+                    )}
+                  />
                 </Col>
               </Row>
             </Panel>

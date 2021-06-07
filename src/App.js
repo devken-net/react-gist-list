@@ -1,8 +1,6 @@
+import Search from './Search';
+import GistList from './GistList';
 import './App.css';
-import Search from './Search/Search';
-import GistList from './GistList/GistList';
-
-
 
 function App() {
 
