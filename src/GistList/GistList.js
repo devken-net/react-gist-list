@@ -1,7 +1,8 @@
-import { Avatar, Button, Col, Collapse, List, Row, Tag, Tooltip, Typography } from 'antd';
+import { Button, Col, Collapse, List, Row, Spin, Tag, Typography } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { getAllGistForks } from './GistListAction';
-import './GistList.css';
+import ForksAvatar from '../ForksAvatar/ForksAvatar';
+import './GistList.scoped.css';
 
 const { Panel } = Collapse;
 const { Title } = Typography;
@@ -17,32 +18,6 @@ function GistListComponent() {
     dispatch(getAllGistForks(id, forks_url));
   }
 
-  const ForkedBy = ({ forks, html_url }) => {
-    if (!forks || forks.length < 1) return <Avatar style={{ color: '#3c9ae8', backgroundColor: '#111d2c' }}>0</Avatar>;
-    const lastThreeForks = forks.slice(-3, forks.length);
-    const otherForksCount = forks.length > 3 ? forks.length-3 : 0
-
-    return <>
-      {
-        lastThreeForks.map(fork => 
-          <Tooltip key={ fork?.id } title={fork?.owner?.login} placement="top">
-            <Button type="link" href={fork?.html_url} target="_blank" className="mx-1 pa-0">
-              <Avatar src={ fork?.owner?.avatar_url } />
-            </Button>
-          </Tooltip>
-        )
-      }
-      {
-        !!otherForksCount &&
-        <Tooltip title="View All" placement="top">
-          <Button type="link" href={`${html_url}/forks`} target="_blank" className="mx-1 pa-0">
-            <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>+{ otherForksCount }</Avatar>
-          </Button>
-        </Tooltip>
-      }
-    </>
-  }
-
   return (
     <section className="pa-4">
       <Collapse onChange={onCollapsed} accordion>
@@ -51,9 +26,7 @@ function GistListComponent() {
             <Panel key={gist.id} 
               showArrow={false}
               header={
-                <Button type="link" block size="large" className="text-align--left">
-                  {gist?.owner?.login} / { gist?.files && Object.keys(gist.files)[0] }
-                </Button>
+                <Title level={5} className="panel-title mb-0">{gist?.owner?.login} / { gist?.files && Object.keys(gist.files)[0] }</Title>
               }
             >
               <Row align="middle" justify="start" gutter="12" className="my-4">
@@ -65,7 +38,9 @@ function GistListComponent() {
                 <Col flex="100px" className="pr-4"> Forked By: </Col>
                 <Col flex="auto">
                   {
-                    ForkedBy(gist)
+                    gist?.forks ?
+                    <ForksAvatar forks={gist?.forks} html_url={gist?.html_url} /> :
+                    <Spin />
                   }
                 </Col>
               </Row>
