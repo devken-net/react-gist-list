@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, Collapse, Row, Tooltip } from 'antd';
+import { Avatar, Button, Col, Collapse, List, Row, Tag, Tooltip } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { getAllGistForks } from './GistListAction';
 import './GistList.css';
@@ -15,20 +15,25 @@ function GistListComponent() {
     dispatch(getAllGistForks(id, forks_url));
   }
 
-  const ForkedBy = (forks) => {
+  const ForkedBy = ({ forks, html_url }) => {
     if (!forks) return;
     const lastThreeForks = forks.slice(-3, forks.length);
 
     return <>
       {
         lastThreeForks.map(fork => 
-          <Tooltip title={fork?.owner?.login} placement="top" className="mx-2">
-            <Button type="link" href={fork?.html_url} target="_blank">
+          <Tooltip title={fork?.owner?.login} placement="top">
+            <Button type="link" href={fork?.html_url} target="_blank" className="mx-1 pa-0">
               <Avatar src={ fork?.owner?.avatar_url } />
             </Button>
           </Tooltip>
         )
       }
+      <Tooltip title="View All" placement="top">
+        <Button type="link" href={`${html_url}/forks`} target="_blank" className="mx-1 pa-0">
+          <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>+{ (forks.length-3) }</Avatar>
+        </Button>
+      </Tooltip>
     </>
   }
 
@@ -45,28 +50,35 @@ function GistListComponent() {
                 </Button>
               }
             >
-              <Row align="middle" justify="start" gutter="12">
+              <Row align="middle" justify="start" gutter="12" className="my-4">
                 <Col flex="none" className="pr-4">
                   { gist?.description || 'No available description' }
                 </Col>
               </Row>
-              <Row align="middle" justify="start" gutter="12">
-                <Col flex="none" className="pr-4"> Forks: </Col>
-                <Col flex="auto" className="pr-4"> { gist?.forks?.length } </Col>
-              </Row>
-              <Row align="middle" justify="start" gutter="12">
-                <Col flex="none" className="pr-4"> Forked By: </Col>
-                <Col flex="auto" className="pr-4">
+              <Row align="middle" justify="start" gutter="12" className="my-4">
+                <Col flex="200px" className="pr-4"> Forked By: </Col>
+                <Col flex="auto">
                   {
-                     ForkedBy(gist?.forks)
+                     ForkedBy(gist)
                   }
                 </Col>
               </Row>
-              <Row align="middle" justify="start" gutter="12">
-                <Col flex="none" className="pr-4"> Files: </Col>
+              <Row align="top" justify="start" gutter="12" className="my-4">
+                <Col flex="200px" className="pr-4"> Files: </Col>
                 <Col flex="auto" className="pr-4">
                   {
-                     ForkedBy(gist?.forks)
+                    <List
+                      bordered
+                      dataSource={ gist?.files && Object.values(gist.files) }
+                      renderItem={item => (
+                        <List.Item>
+                          <Button type="link" href={`${ gist?.html_url }#file-${ item?.filename }`} target="_blank" className="mx-2 pa-0">
+                            { item?.filename }
+                          </Button>
+                           <Tag color="blue">{ item?.language }</Tag>
+                        </List.Item>
+                      )}
+                    />
                   }
                 </Col>
               </Row>
