@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from "redux-thunk";
-import reducer from './shared/store';
+import reducer from './App.reducer';
 
 
 const store = createStore(reducer, composeWithDevTools( applyMiddleware(thunk) ));
