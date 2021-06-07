@@ -1,9 +1,10 @@
-import { Avatar, Button, Col, Collapse, List, Row, Tag, Tooltip } from 'antd';
+import { Avatar, Button, Col, Collapse, List, Row, Tag, Tooltip, Typography } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { getAllGistForks } from './GistListAction';
 import './GistList.css';
 
 const { Panel } = Collapse;
+const { Title } = Typography;
 
 function GistListComponent() {
   const { gistList } = useSelector(state => state);
@@ -50,18 +51,18 @@ function GistListComponent() {
             <Panel key={gist.id} 
               showArrow={false}
               header={
-                <Button type="link" block size="large" className="text-left">
+                <Button type="link" block size="large" className="text-align--left">
                   {gist?.owner?.login} / { gist?.files && Object.keys(gist.files)[0] }
                 </Button>
               }
             >
               <Row align="middle" justify="start" gutter="12" className="my-4">
                 <Col flex="none" className="pr-4">
-                  { gist?.description || 'No available description' }
+                  <Title level={5}>{ gist?.description || 'No available description' }</Title>
                 </Col>
               </Row>
               <Row align="middle" justify="start" gutter="12" className="my-4">
-                <Col flex="200px" className="pr-4"> Forked By: </Col>
+                <Col flex="100px" className="pr-4"> Forked By: </Col>
                 <Col flex="auto">
                   {
                     ForkedBy(gist)
@@ -69,7 +70,7 @@ function GistListComponent() {
                 </Col>
               </Row>
               <Row align="top" justify="start" gutter="12" className="my-4">
-                <Col flex="200px" className="pr-4"> Files: </Col>
+                <Col flex="100px" className="pr-4"> Files: </Col>
                 <Col flex="auto" className="pr-4">
                   {
                     <List
