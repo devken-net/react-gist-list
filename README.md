@@ -10,8 +10,6 @@ Sample React App that utilizes Github API to search user public Gists.
 * Display filetypes as tags
 * Display the last three users who fork it
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ### Setup
 
 In the project directory, run:
