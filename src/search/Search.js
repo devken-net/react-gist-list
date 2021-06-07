@@ -7,6 +7,7 @@ const { Search } = Input;
 function SearchComponent() {
   const dispatch = useDispatch();
   const onSearch = (username) => { 
+    console.log('username', username);
     // invoke action on search submit
     dispatch(getAllUserGists(username.trim()));
    }
@@ -20,11 +21,11 @@ function SearchComponent() {
         </Col>
         <Col flex="auto">
           <Search
+            data-testid="searchInput"
             placeholder="username"
             allowClear
-            enterButton="Search"
+            enterButton
             size="large"
-            value="jmk2142"
             onSearch={onSearch}
           />
         </Col>
