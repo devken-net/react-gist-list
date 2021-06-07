@@ -8,7 +8,11 @@ const convertArrayToObject = (array) => {
   }, initialValue);
 };
 
-function reducer(state = { gistList: {} }, action) {
+export const initialState = {
+  gistList: {}
+};
+
+export function reducer(state = initialState, action) {
   switch (action.type) {
     case "FETCH_USER_GISTS":
       return {
@@ -30,5 +34,3 @@ function reducer(state = { gistList: {} }, action) {
       return state;
   }
 }
-
-export default reducer;
