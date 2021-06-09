@@ -1,4 +1,4 @@
-import Search from './SearchBar';
+import Search from './Search';
 import GistList from './GistList';
 import './App.css';
 
